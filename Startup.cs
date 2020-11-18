@@ -33,45 +33,21 @@ namespace DemoWebApp
                 opts.EnableSensitiveDataLogging(true);
             });
 
-            services.AddControllers().AddNewtonsoftJson().AddXmlSerializerFormatters();
-
-            services.Configure<MvcNewtonsoftJsonOptions>(opts =>
-            {
-                opts.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            });
-
-            services.Configure<MvcOptions>(opts =>
-            {
-                opts.RespectBrowserAcceptHeader = true;
-                opts.ReturnHttpNotAcceptable = true;
-            });
-
-            services.AddSwaggerGen(opts =>
-            {
-                opts.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApp", Version = "v1" });
-            });
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, DataContext context)
         {
             app.UseDeveloperExceptionPage();
+            app.UseStaticFiles();
             app.UseRouting();
-            app.UseMiddleware<TestMiddleware>();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-                //endpoints.MapWebService();
                 endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
-            app.UseSwagger();
-            app.UseSwaggerUI(opts =>
-            {
-                opts.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApp");
-            });
+
             SeedData.SeedDatabase(context);
         }
     }

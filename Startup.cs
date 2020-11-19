@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DemoWebApp
 {
@@ -34,11 +35,16 @@ namespace DemoWebApp
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+            services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddDistributedMemoryCache();
             services.AddSession(opts =>
             {
                 opts.Cookie.IsEssential = true;
+            });
+
+            services.Configure<RazorPagesOptions>(opts =>
+            {
+                opts.Conventions.AddPageRoute("/Index", "/extra/page/{id:long?}");
             });
         }
 
@@ -51,6 +57,7 @@ namespace DemoWebApp
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute();
             });

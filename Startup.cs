@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using DemoWebApp.TagHelpers;
 
 namespace DemoWebApp
 {
@@ -36,18 +38,9 @@ namespace DemoWebApp
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages().AddRazorRuntimeCompilation();
-            services.AddDistributedMemoryCache();
-            services.AddSession(opts =>
-            {
-                opts.Cookie.IsEssential = true;
-            });
-
-            services.Configure<RazorPagesOptions>(opts =>
-            {
-                opts.Conventions.AddPageRoute("/Index", "/extra/page/{id:long?}");
-            });
-
             services.AddSingleton<CitiesData>();
+            services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();
+            services.AddTransient<ITagHelperComponent, TableFooterTagHelperComponent>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,13 +48,13 @@ namespace DemoWebApp
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
-            app.UseSession();
+            
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
             });
 
             SeedData.SeedDatabase(context);

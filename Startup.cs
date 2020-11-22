@@ -39,8 +39,8 @@ namespace DemoWebApp
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddSingleton<CitiesData>();
-            services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();
-            services.AddTransient<ITagHelperComponent, TableFooterTagHelperComponent>();
+            //services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();
+            //services.AddTransient<ITagHelperComponent, TableFooterTagHelperComponent>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

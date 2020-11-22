@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Product>
 
 @{ 
-    Layout = null;
+    Layout = "_SimpleLayout";
 }
 
 <!DOCTYPE html>
@@ -14,7 +14,10 @@
     <div class="m-2">
         <table class="table table-sm table-striped table-bordered">
             <thead>
-                <tr><th>Name</th><th>Price</th></tr>
+                <tr>
+                    <th>Name</th><th>Price</th>
+                    <th>Category</th><th>Supplier</th><th></th>
+                </tr>
             </thead>
             <tbody>
                 @foreach (Product p in Model)
@@ -23,6 +26,7 @@
                 }
             </tbody>
         </table>
+        <a asp-page="/suppliers/list" class="btn btn-secondary">Suppliers</a>
     </div>
 </body>
 </html>
